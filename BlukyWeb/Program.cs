@@ -1,7 +1,15 @@
+using BlulkyBook.DataAccess;
+using BlulkyBook.DataAccess.Repository;
+using BlulkyBook.DataAccess.Repository.Interface;
+using Microsoft.EntityFrameworkCore;
+
 var builder = WebApplication.CreateBuilder(args);
 
 // Add services to the container.
 builder.Services.AddControllersWithViews();
+builder.Services.AddDbContext<ApplicationDbContext>(option => 
+option.UseSqlServer(builder.Configuration.GetConnectionString("DefultConnection")));
+builder.Services.AddScoped<IUnityOfWork, UnityOfWork>();
 
 var app = builder.Build();
 
@@ -22,6 +30,6 @@ app.UseAuthorization();
 
 app.MapControllerRoute(
     name: "default",
-    pattern: "{controller=Home}/{action=Index}/{id?}");
+    pattern: "{area=Customer}/{controller=Home}/{action=Index}/{id?}");
 
 app.Run();
