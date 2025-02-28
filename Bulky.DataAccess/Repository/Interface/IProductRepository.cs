@@ -1,4 +1,5 @@
-﻿using System;
+﻿using BlulkyBook.Models;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
@@ -6,10 +7,8 @@ using System.Threading.Tasks;
 
 namespace BlulkyBook.DataAccess.Repository.Interface
 {
-    public interface IUnityOfWork
+    public interface IProductRepository : IRepositroy<Product>
     {
-       ICategoryRepository Category { get; }
-       IProductRepository Product { get; }
-        void Save();
+        void Update(Product entity);
     }
 }

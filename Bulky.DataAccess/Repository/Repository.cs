@@ -12,22 +12,37 @@ namespace BlulkyBook.DataAccess.Repository
         {
             _db = db;
             this.dbSet = _db.Set<T>();
+            _db.Product.Include(u => u.Category).Include(i => i.CategoryID);
         }
         public void Add(T entity)
         {
             dbSet.Add(entity);
         }
 
-        public T Get(Expression<Func<T, bool>> filter)
+        public T Get(Expression<Func<T, bool>> filter, string? includePropeties = null)
         {
             IQueryable<T> entity = dbSet;
             entity = entity.Where(filter);
+            if (!string.IsNullOrEmpty(includePropeties))
+            {
+                foreach (var includepro in includePropeties.Split(new char[] { ',' }, StringSplitOptions.RemoveEmptyEntries))
+                {
+                    entity = entity.Include(includePropeties);
+                }
+            }
             return entity.FirstOrDefault();
         }
 
-        public IEnumerable<T> GetAll()
+        public IEnumerable<T> GetAll(string? includePropeties = null)
         {
             IQueryable<T> entity = dbSet;
+            if (!string.IsNullOrEmpty(includePropeties))
+            {
+                foreach (var includepro in includePropeties.Split(new char[] { ','}, StringSplitOptions.RemoveEmptyEntries))
+                {
+                    entity = entity.Include(includePropeties);
+                }
+            }
             return entity.ToList();
         }
 
@@ -39,11 +54,6 @@ namespace BlulkyBook.DataAccess.Repository
         public void RemoveRange(IEnumerable<T> entities)
         {
             dbSet.RemoveRange(entities);
-        }
-
-        public void Update(T entity)
-        {
-            dbSet.Update(entity);
         }
     }
 }

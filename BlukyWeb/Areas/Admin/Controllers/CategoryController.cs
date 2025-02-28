@@ -80,14 +80,18 @@ namespace BlulkyBook.Web.Areas.Admin.Controllers
             return NotFound();
         }
         [HttpPost]
-        public IActionResult Delete(Category obj)
+        public IActionResult Delete(int id)
         {
-            if (obj != null)
+            if (id != null)
             {
-                _unityOfWork.Category.Remove(obj);
-                _unityOfWork.Save();
-                TempData["success"] = "Category Delete Succesfuly";
-                return RedirectToAction("Index");
+                Category deleteCategory = _unityOfWork.Category.Get(u => u.Id == id);
+                if (deleteCategory != null)
+                {
+                    _unityOfWork.Category.Remove(deleteCategory);
+                    _unityOfWork.Save();
+                    TempData["success"] = "Category Delete Succesfuly";
+                    return RedirectToAction("Index");
+                }
             }
             TempData["error"] = "Error Show";
             return View();

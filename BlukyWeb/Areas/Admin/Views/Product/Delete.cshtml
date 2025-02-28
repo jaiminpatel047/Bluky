@@ -1,0 +1,59 @@
+﻿@model ProductViewModel
+
+<form method="post">
+    <div class="border p-3 my-4 pb-5">
+        <div class="row pb-2">
+            <h2 class="text-primery">Delete Product</h2>
+            <hr />
+        </div>
+        <div class="mb-3 row p-1">
+            <label asp-for="product.Title" class="p-0"></label>
+            <input asp-for="product.Title" disabled class="form-control" />
+        </div>
+        <div class="mb-3 row p-1">
+            <label asp-for="product.Description" class="p-0"></label>
+            <textarea asp-for="product.Description" disabled class="form-control"></textarea>
+        </div>
+        <div class="mb-3 row p-1">
+            <label asp-for="product.ISBN" class="p-0"></label>
+            <input asp-for="product.ISBN" disabled class="form-control" />
+        </div>
+        <div class="mb-3 row p-1">
+            <label asp-for="product.Author" class="p-0"></label>
+            <input asp-for="product.Author" disabled class="form-control" />
+        </div>
+        <div class="mb-3 row p-1">
+            <label asp-for="product.ImageURl" class="p-0"></label>
+            <input asp-for="product.ImageURl" class="form-control" />
+        </div>
+        <div class="mb-3 row p-1">
+            <label asp-for="product.ListPrice" class="p-0"></label>
+            <input asp-for="product.ListPrice" disabled class="form-control" />
+        </div>
+        <div class="mb-3 row p-1">
+            <label asp-for="product.Price" class="p-0"></label>
+            <input asp-for="product.Price" disabled class="form-control" />
+        </div>
+        <div class="mb-3 row p-1">
+            <label asp-for="product.Price50" class="p-0"></label>
+            <input asp-for="product.Price50" disabled class="form-control" />
+        </div>
+        <div class="mb-3 row p-1">
+            <label asp-for="product.Price100" class="p-0"></label>
+            <input asp-for="product.Price100" disabled class="form-control" />
+        </div>
+        <div class="row">
+            <div class="col-6">
+                <button type="submit" class="btn btn-danger form-control">Remove</button>
+            </div>
+            <div class="col-6">
+                <a asp-controller="Product" asp-action="Index" class="btn btn-secondary border form-control">Back To List</a>
+            </div>
+        </div>
+    </div>
+</form>
+
+
+@section Scripts {
+    <partial name="_ValidationScriptsPartial" />
+}
