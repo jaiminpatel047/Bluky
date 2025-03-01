@@ -1,0 +1,33 @@
+﻿@model List<Company>;
+
+<div class="container">
+    <div class="row pt-4">
+        <div class="col-6">
+            <h1>Product List</h1>
+        </div>
+        <div class="col-6 text-end">
+            <button class="btn btn-dark">
+                <a asp-action="AddOrUpdate" asp-controller="Company">
+                    Create New Company
+                </a>
+            </button>
+        </div>
+    </div>
+</div>
+<table id="companyTbl" class="table table-striped">
+    <thead>
+        <tr>
+            <th>Name</th>
+            <th>PhoneNumber</th>
+            <th>City</th>
+            <th>State</th>
+            <th>PastalCode</th>
+            <th></th>
+        </tr>
+    </thead>
+</table>
+
+
+@section Scripts {
+    <script src="~/js/companytable.js"></script>
+}

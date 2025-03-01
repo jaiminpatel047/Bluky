@@ -97,42 +97,6 @@ namespace BlulkyBook.Web.Areas.Admin.Controllers
             TempData["error"] = "Error Show";
             return View();
         }
-        //public IActionResult Delete(int? ID)
-        //{
-        //    if (ID != null)
-        //    {
-        //        IEnumerable<SelectListItem> categoryList = _unityOfWork.Category.GetAll().Select(u => new SelectListItem
-        //        {
-        //            Text = u.Name,
-        //            Value = u.Id.ToString()
-        //        });
-
-        //        ProductViewModel productDetail = new()
-        //        {
-        //            product = _unityOfWork.Product.Get(u => u.Id == ID),
-        //            CategoryList = categoryList
-        //        };
-        //        return View(productDetail);
-        //    }
-        //    return View();
-        //}
-        //[HttpPost]
-        //public IActionResult Delete(int id)
-        //{
-        //    if (id != null)
-        //    {
-        //        Product deleteProduct = _unityOfWork.Product.Get(u => u.Id == id);
-        //        if (deleteProduct != null)
-        //        {
-        //            _unityOfWork.Product.Remove(deleteProduct);
-        //            _unityOfWork.Save();
-        //            TempData["success"] = "Category Delete Succesfuly";
-        //            return RedirectToAction("Index");
-        //        }
-        //    }
-        //    TempData["error"] = "Error Show";
-        //    return View();
-        //}
 
         #region Api Call
         [HttpGet]
@@ -148,10 +112,13 @@ namespace BlulkyBook.Web.Areas.Admin.Controllers
                 Product deleteProduct = _unityOfWork.Product.Get(u => u.Id == id);
                 if (deleteProduct != null)
                 {
-                    var deleteProductImage = Path.Combine(_webHostEnvironment.WebRootPath, deleteProduct.ImageURl);
-                    if (System.IO.File.Exists(deleteProductImage))
+                    if (deleteProduct.ImageURl != null)
                     {
-                        System.IO.File.Delete(deleteProductImage);
+                        var deleteProductImage = Path.Combine(_webHostEnvironment.WebRootPath, deleteProduct.ImageURl);
+                        if (System.IO.File.Exists(deleteProductImage))
+                        {
+                            System.IO.File.Delete(deleteProductImage);
+                        }
                     }
                     _unityOfWork.Product.Remove(deleteProduct);
                     _unityOfWork.Save();

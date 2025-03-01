@@ -10,6 +10,7 @@ namespace BlulkyBook.DataAccess.Repository.Interface
     {
        ICategoryRepository Category { get; }
        IProductRepository Product { get; }
+       ICompanyRepository Company { get; }
         void Save();
     }
 }

@@ -1,24 +1,24 @@
-﻿var productTbl
+﻿var companyTbl
 $(document).ready(function () {
-   productTbl = $('#productTbl').DataTable({
+    companyTbl = $('#companyTbl').DataTable({
         ajax: {
-            url: '/admin/product/getall',
+            url: '/admin/company/getall',
         },
         columns: [
-            { data: 'title' },
-            { data: 'isbn' },
-            { data: 'price' },
-            { data: 'author' },
-            { data: 'category.name' },
+            { data: 'name' },
+            { data: 'phoneNumber' },
+            { data: 'city' },
+            { data: 'state' },
+            { data: 'pastalCode' },
             {
                 data: 'id',
                 render: function (data) {
-                    return  `<div class="row">
+                    return `<div class="row">
                         <div class="col-6">
-                            <a href="/Admin/Product/Upsert?id=${data}" class="btn btn-primary form-control">Edit</a>
+                            <a href="/Admin/company/AddOrUpdate?id=${data}" class="btn btn-primary form-control">Edit</a>
                         </div>
                         <div class="col-6">
-                            <a onclick=Delete('/Admin/Product/Detele?id=${data}') class="btn btn-danger form-control">Delete</a>
+                            <a onclick=DeleteCompany('/Admin/company/Delete?id=${data}') class="btn btn-danger form-control">Delete</a>
                         </div>
                     </div>`
                 }
@@ -27,7 +27,7 @@ $(document).ready(function () {
     });
 });
 
-function Delete(url) {
+function DeleteCompany(url) {
     
     Swal.fire({
         title: "Are you sure?",
@@ -44,7 +44,7 @@ function Delete(url) {
                 type: 'DELETE',
                 success: function (data) {
                     if (data.success == true) {
-                        productTbl.ajax.reload();
+                        companyTbl.ajax.reload();
                         Swal.fire({
                             title: "Deleted!",
                             text: data.message,
@@ -52,9 +52,9 @@ function Delete(url) {
                         })
                     }
                 }
-                
+
             })
-            
+
         }
     });
 }

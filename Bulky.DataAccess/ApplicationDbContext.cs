@@ -11,6 +11,7 @@ namespace BlulkyBook.DataAccess
         }
         public DbSet<Category> Category { get; set; }
         public DbSet<Product> Product { get; set; }
+        public DbSet<Company> Company { get; set; }
 
         protected override void OnModelCreating(ModelBuilder modelBuilder)
         {
