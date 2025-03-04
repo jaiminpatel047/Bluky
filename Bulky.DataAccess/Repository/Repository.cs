@@ -19,9 +19,18 @@ namespace BlulkyBook.DataAccess.Repository
             dbSet.Add(entity);
         }
 
-        public T Get(Expression<Func<T, bool>> filter, string? includePropeties = null)
+        public T Get(Expression<Func<T, bool>> filter, string? includePropeties = null, bool Tracked = false)
         {
-            IQueryable<T> entity = dbSet;
+            IQueryable<T> entity;
+            if (Tracked)
+            {
+                entity = dbSet;
+            }
+            else
+            {
+                entity = dbSet.AsNoTracking();
+            }
+            
             entity = entity.Where(filter);
             if (!string.IsNullOrEmpty(includePropeties))
             {
@@ -33,9 +42,13 @@ namespace BlulkyBook.DataAccess.Repository
             return entity.FirstOrDefault();
         }
 
-        public IEnumerable<T> GetAll(string? includePropeties = null)
+        public IEnumerable<T> GetAll(Expression<Func<T, bool>>? filter = null, string? includePropeties = null)
         {
             IQueryable<T> entity = dbSet;
+            if (filter != null)
+            {
+                entity = entity.Where(filter);
+            }
             if (!string.IsNullOrEmpty(includePropeties))
             {
                 foreach (var includepro in includePropeties.Split(new char[] { ','}, StringSplitOptions.RemoveEmptyEntries))

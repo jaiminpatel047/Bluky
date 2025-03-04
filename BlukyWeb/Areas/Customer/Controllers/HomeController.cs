@@ -1,8 +1,10 @@
 using BlulkyBook.DataAccess.Repository.Interface;
 using BlulkyBook.Models;
 using BlulkyBook.Models.VIewModel;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using System.Diagnostics;
+using System.Security.Claims;
 
 namespace BlulkyBook.Web.Areas.Customer.Controllers
 {
@@ -23,22 +25,48 @@ namespace BlulkyBook.Web.Areas.Customer.Controllers
             IEnumerable<Product> productList = _unityOfWork.Product.GetAll(includePropeties: "Category");
             return View(productList);
         }
-
-        public IActionResult ProductDetail(int? Id)
+        [HttpGet]
+        public IActionResult ProductDetail(int Id)
         {
             if (Id != null)
             {
-                Product individualProduct = _unityOfWork.Product.Get(u => u.Id == Id, includePropeties: "Category");
-
-                ProductViewModel product = new()
-                {
-                    product = individualProduct,
-                    CategoryList = null
+                ShoppingCart shoppingCard = new() 
+                { 
+                    Product = _unityOfWork.Product.Get(u => u.Id == Id, includePropeties: "Category"),
+                    Count = 1,
+                    ProductID = Id
                 };
 
-                return View(product);
+                return View(shoppingCard);
             }
             return NotFound();
+        }
+        [HttpPost]
+        [Authorize]
+        public IActionResult ProductDetail(ShoppingCart cart)
+        {
+            if (cart != null)
+            {
+                var userId = User.FindFirstValue(ClaimTypes.NameIdentifier);
+                //var clameUserName = (ClaimsIdentity)User.Identities;
+                //var userId = clameUserName.FindFirst(ClaimTypes.NameIdentifier).Value;
+
+                cart.ApplicationUserId = userId;
+                cart.Id = 0;
+                var checkShoppingIDExist = _unityOfWork.ShoppingCart.Get(u => u.ProductID == cart.ProductID && u.ApplicationUserId == cart.ApplicationUserId);
+                if (checkShoppingIDExist != null)
+                {
+                    checkShoppingIDExist.Count += cart.Count;
+                    _unityOfWork.ShoppingCart.Update(checkShoppingIDExist);
+                }
+                else
+                {
+                    _unityOfWork.ShoppingCart.Add(cart);
+                }
+                _unityOfWork.Save();
+                TempData["success"] = "Cart updated successfully";
+            }
+            return RedirectToAction("Index");
         }
 
         public IActionResult Privacy()

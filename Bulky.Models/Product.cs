@@ -28,15 +28,15 @@ namespace BlulkyBook.Models
 
         [Required]
         [Display(Name = "Price for 1 - 50")]
-        [Range(1, 1000)]
+        [Range(1, 50)]
         public double Price { get; set; }
         [Required]
         [Display(Name = "Price for 50+")]
-        [Range(1, 1000)]
+        [Range(50, 100)]
         public double Price50 { get; set; }
         [Required]
         [Display(Name = "Price for 100+")]
-        [Range(1, 1000)]
+        [Range(100, 1000)]
         public double Price100 { get; set; }
         [ValidateNever]
         public int CategoryID { get; set; }
