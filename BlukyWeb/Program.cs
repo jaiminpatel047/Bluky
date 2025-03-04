@@ -2,6 +2,9 @@ using BlulkyBook.DataAccess;
 using BlulkyBook.DataAccess.Repository;
 using BlulkyBook.DataAccess.Repository.Interface;
 using Microsoft.EntityFrameworkCore;
+using Microsoft.AspNetCore.Identity;
+using Microsoft.AspNetCore.Identity.UI.Services;
+using BlulkyBook.Utility;
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -9,8 +12,20 @@ var builder = WebApplication.CreateBuilder(args);
 builder.Services.AddControllersWithViews();
 builder.Services.AddDbContext<ApplicationDbContext>(option => 
 option.UseSqlServer(builder.Configuration.GetConnectionString("DefultConnection")));
-builder.Services.AddScoped<IUnityOfWork, UnityOfWork>();
 
+builder.Services.AddIdentity<IdentityUser, IdentityRole>().AddEntityFrameworkStores<ApplicationDbContext>().AddDefaultTokenProviders();
+
+builder.Services.ConfigureApplicationCookie(option =>
+{
+    option.AccessDeniedPath = $"/Identity/Account/AccessDenied";
+    option.LoginPath = $"/Identity/Account/Login";
+    option.LogoutPath = $"/Identity/Account/Logout";
+});
+builder.Services.AddRazorPages();
+
+
+builder.Services.AddScoped<IUnityOfWork, UnityOfWork>();
+builder.Services.AddScoped<IEmailSender, EmailSender>();
 var app = builder.Build();
 
 // Configure the HTTP request pipeline.
@@ -26,7 +41,11 @@ app.UseStaticFiles();
 
 app.UseRouting();
 
+app.UseAuthentication();
 app.UseAuthorization();
+
+
+app.MapRazorPages();
 
 app.MapControllerRoute(
     name: "default",

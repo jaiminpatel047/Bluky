@@ -1,11 +1,14 @@
 ﻿using BlulkyBook.DataAccess;
 using BlulkyBook.DataAccess.Repository.Interface;
 using BlulkyBook.Models;
+using BlulkyBook.Utility;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 
 namespace BlulkyBook.Web.Areas.Admin.Controllers
 {
     [Area("Admin")]
+    [Authorize(Roles = SD.User_Admin)]
     public class CategoryController : Controller
     {
         public readonly IUnityOfWork _unityOfWork;

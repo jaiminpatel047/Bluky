@@ -18,7 +18,7 @@
             <div class="container-fluid">
                 <a class="navbar-brand" asp-area="" asp-controller="Home" asp-action="Index">BlukyWeb</a>
                 <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target=".navbar-collapse" aria-controls="navbarSupportedContent"
-                        aria-expanded="false" aria-label="Toggle navigation">
+                aria-expanded="false" aria-label="Toggle navigation">
                     <span class="navbar-toggler-icon"></span>
                 </button>
                 <div class="navbar-collapse collapse d-sm-inline-flex justify-content-between">
@@ -29,17 +29,23 @@
                         <li class="nav-item">
                             <a class="nav-link">Company</a>
                         </li>
-                        <li class="nav-item dropdown pointer-event">
-                            <div class="nav-link dropdown-toggle" data-bs-toggle="dropdown" aria-expanded="false">
-                                Content Management
-                            </div>
-                            <ul class="dropdown-menu">
-                                <li><a class="dropdown-item" asp-area="Admin" asp-controller="Category" asp-action="Index">Category</a></li>
-                                <li><a class="dropdown-item" asp-area="Admin" asp-controller="Product" asp-action="Index">Product</a></li>
-                                <li><a class="dropdown-item" asp-area="Admin" asp-controller="Company" asp-action="Index">Company</a></li>
-                            </ul>
-                        </li>
+                        @{
+                            if (User.IsInRole(SD.User_Admin))
+                            {
+                                <li class="nav-item dropdown pointer-event">
+                                    <div class="nav-link dropdown-toggle" data-bs-toggle="dropdown" aria-expanded="false">
+                                        Content Management
+                                    </div>
+                                    <ul class="dropdown-menu">
+                                        <li><a class="dropdown-item" asp-area="Admin" asp-controller="Category" asp-action="Index">Category</a></li>
+                                        <li><a class="dropdown-item" asp-area="Admin" asp-controller="Product" asp-action="Index">Product</a></li>
+                                        <li><a class="dropdown-item" asp-area="Admin" asp-controller="Company" asp-action="Index">Company</a></li>
+                                    </ul>
+                                </li>
+                            }
+                        }
                     </ul>
+                    <partial name="_LoginPartial" />
                 </div>
             </div>
         </nav>
