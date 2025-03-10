@@ -12,6 +12,9 @@ namespace BlulkyBook.DataAccess.Repository.Interface
        IProductRepository Product { get; }
        ICompanyRepository Company { get; }
        IShoppingCartRepository ShoppingCart { get; }
+       IOrderHeaderRepository OrderHeader { get; }
+       IOrderDetailsRepository OrderDetail { get; }
+       IApplicatonUserRepositroy ApplicationUser { get; }
         void Save();
     }
 }

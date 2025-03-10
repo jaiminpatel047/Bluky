@@ -15,6 +15,8 @@ namespace BlulkyBook.DataAccess
         public DbSet<Company> Company { get; set; }
         public DbSet<ApplicationUser> ApplicationUser { get; set; }
         public DbSet<ShoppingCart> ShoppingCart { get; set; }
+        public DbSet<OrderHeader> OrderHeaders { get; set; }
+        public DbSet<OrderDetail> OrderDetails { get; set; }
 
         protected override void OnModelCreating(ModelBuilder modelBuilder)
         {
