@@ -15,4 +15,9 @@ namespace BlulkyBook.Models.VIewModel
         [ValidateNever]
         public IEnumerable<SelectListItem>? CategoryList { get; set; }
     }
+    public class OrderVM
+    {
+        public OrderHeader OrderHeader { get; set; }
+        public IEnumerable<OrderDetail> OrderDetail { get; set; }
+    }
 }

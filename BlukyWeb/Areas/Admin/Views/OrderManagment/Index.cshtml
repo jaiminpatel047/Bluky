@@ -1,0 +1,77 @@
+﻿@using BlulkyBook.Utility
+@model List<Company>
+
+@{
+    var status = Context.Request.Query["status"];
+    var processing = "text-primary";
+    var pending = "text-primary";
+    var shipped = "text-primary";
+    var approved = "text-primary";
+    var all = "text-primary";
+
+    switch (status)
+    {
+        case "processing":
+            processing = "text-primary active";
+            break;
+        case "pending":
+            pending = "text-primary active";
+            break;
+        case "shipped":
+            shipped = "text-primary active";
+            break;
+        case "approved":
+            approved = "text-primary active";
+            break;
+        default:
+            all = "text-primary active";
+            break;
+    }
+}
+
+<div class="container">
+    <div class="row pt-4">
+        <div class="col-6">
+            <h1>Order Management</h1>
+        </div>
+        <div class="col-6 text-end p-0">
+            <div class="d-flex justify-content-between pb-5 pt-2">
+                <span></span>
+                <ul class="list-group list-group-horizontal-sm">
+                    <a style="text-decoration:none;" asp-area="Admin" asp-controller="Order" asp-action="Index" asp-route-status="@SD.StatusInProcess.ToLower()">
+                    <li class="list-group-item text-primary @processing">In Process</li>
+                    </a>
+                    <a style="text-decoration:none;" asp-area="Admin" asp-controller="Order" asp-action="Index" asp-route-status="@SD.StatusPending.ToLower()">
+                    <li class="list-group-item @pending">Payment Pending</li>
+                    </a>
+                    <a style="text-decoration:none;" asp-area="Admin" asp-controller="Order" asp-action="Index" asp-route-status="@SD.StatusShipped.ToLower()">
+                    <li class="list-group-item @shipped">Completed</li>
+                    </a>
+                    <a style="text-decoration:none;" asp-area="Admin" asp-controller="Order" asp-action="Index" asp-route-status="@SD.PaymentStatusApproved.ToLower()">
+                    <li class="list-group-item @approved">Approved</li>
+                    </a>
+                    <a style="text-decoration:none;" asp-area="Admin" asp-controller="Order" asp-action="Index" asp-route-status="all">
+                    <li class="list-group-item @all">All</li>
+                    </a>
+                </ul>
+            </div>
+        </div>
+    </div>
+</div>
+<table id="orderManageTbl" class="table table-striped">
+    <thead>
+        <tr>
+            <th>Name</th>
+            <th>Number</th>
+            <th>Email</th>
+            <th>Status</th>
+            <th>Total</th>
+            <th></th>
+        </tr>
+    </thead>
+</table>
+
+
+@section Scripts {
+    <script src="~/js/Order.js"></script>
+}

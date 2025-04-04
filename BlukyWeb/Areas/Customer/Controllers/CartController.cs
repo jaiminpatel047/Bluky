@@ -34,7 +34,6 @@ namespace BlulkyBook.Web.Areas.Customer.Controllers
 
             return View(shoppingList);
         }
-
         public IActionResult Plus(int cartId)
         {
             var shoppingCart = _unityOfWork.ShoppingCart.Get(u => u.Id == cartId, includePropeties: "Product");
