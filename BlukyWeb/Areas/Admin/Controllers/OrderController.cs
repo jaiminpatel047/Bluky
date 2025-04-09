@@ -12,6 +12,7 @@ using System.Security.Claims;
 namespace BlulkyBook.Web.Areas.Admin.Controllers
 {
     [Area("Admin")]
+    [Authorize]
     public class OrderController : Controller
     {
         private readonly IUnityOfWork _unityOfWork;
@@ -62,6 +63,25 @@ namespace BlulkyBook.Web.Areas.Admin.Controllers
             return RedirectToAction(nameof(Detail), new { orderId = orderHeaderFromDb.Id });
         }
 
+        [HttpPost]
+        [Authorize(Roles = SD.User_Admin + "," + SD.User_Employe)]
+        public IActionResult CancelOrder(OrderVM model)
+        {
+            var cancelOrder = _unityOfWork.OrderHeader.Get(x => x.Id == model.OrderHeader.Id);
+
+            if(cancelOrder.OrderStatus == SD.PaymentStatusApproved)
+            {
+                _unityOfWork.OrderHeader.UpdateOrderStatus(cancelOrder.Id, SD.StatusCancelled);
+                _unityOfWork.Save();
+
+                TempData["Success"] = "Order Cancelled Successfully.";
+            }
+            else
+            {
+                TempData["Error"] = "Order Cannot be Cancelled.";
+            }
+            return RedirectToAction(nameof(Detail), new { orderId = cancelOrder.Id });
+        }
 
         #region Api Call
         [HttpGet]
@@ -84,7 +104,7 @@ namespace BlulkyBook.Web.Areas.Admin.Controllers
             switch (status)
             {
                 case "pending":
-                    detail = detail.Where(u => u.PaymentStatus == SD.PaymentStatusDelayedPayment);
+                    detail = detail.Where(u => u.PaymentStatus == SD.PaymentStatusPending);
                     break;
                 case "processing":
                     detail = detail.Where(u => u.OrderStatus == SD.StatusInProcess);

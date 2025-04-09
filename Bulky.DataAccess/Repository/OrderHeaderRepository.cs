@@ -20,6 +20,19 @@ namespace BlulkyBook.DataAccess.Repository
         {
             _db.OrderHeaders.Update(entity);
         }
+        public void UpdateOrderStatus(int Id, string status, string? paymentStatus = null)
+        {
+            var orderFromDB = _db.OrderHeaders.FirstOrDefault(u => u.Id == Id);
+
+            if (orderFromDB !=  null)
+            {
+                orderFromDB.OrderStatus = status;
+                if (paymentStatus != null)
+                {
+                    orderFromDB.PaymentStatus = paymentStatus;
+                }
+            }
+        }
         public void Save()
         {
             _db.SaveChanges();

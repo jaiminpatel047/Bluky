@@ -20,4 +20,9 @@ namespace BlulkyBook.Models.VIewModel
         public OrderHeader OrderHeader { get; set; }
         public IEnumerable<OrderDetail> OrderDetail { get; set; }
     }
+    public class UserManagementVM
+    {
+        public ApplicationUser ApplicationUser { get; set; }
+        public IEnumerable<SelectListItem> RoleList { get; set; }
+    }
 }

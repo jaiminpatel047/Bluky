@@ -40,6 +40,8 @@ namespace BlulkyBook.Web.Areas.Customer.Controllers
             shoppingCart.Count += 1;
             _unityOfWork.ShoppingCart.Update(shoppingCart);
             _unityOfWork.Save();
+
+            HttpContext.Session.SetInt32(SD.SessionCart, _unityOfWork.ShoppingCart.GetAll(x => x.ApplicationUserId == shoppingCart.ApplicationUserId).Count());
             return RedirectToAction(nameof(Index));
         }
 
@@ -57,13 +59,16 @@ namespace BlulkyBook.Web.Areas.Customer.Controllers
 
               _unityOfWork.ShoppingCart.Update(shoppingCart);
               _unityOfWork.Save();
-          return RedirectToAction(nameof(Index));
+            HttpContext.Session.SetInt32(SD.SessionCart, _unityOfWork.ShoppingCart.GetAll(x => x.ApplicationUserId == shoppingCart.ApplicationUserId).Count());
+            return RedirectToAction(nameof(Index));
         }
         public IActionResult Remove(int cartId)
         {
             var shoppingCart = _unityOfWork.ShoppingCart.Get(u => u.Id == cartId, includePropeties: "Product");
             _unityOfWork.ShoppingCart.Remove(shoppingCart);
             _unityOfWork.Save();
+
+            HttpContext.Session.SetInt32(SD.SessionCart, _unityOfWork.ShoppingCart.GetAll(x => x.ApplicationUserId == shoppingCart.ApplicationUserId).Count());
             return RedirectToAction(nameof(Index));
         }
         private double ProductPrice(ShoppingCart ShoppingCart)

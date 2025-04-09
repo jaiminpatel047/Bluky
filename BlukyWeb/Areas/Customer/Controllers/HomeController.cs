@@ -1,6 +1,7 @@
 using BlulkyBook.DataAccess.Repository.Interface;
 using BlulkyBook.Models;
 using BlulkyBook.Models.VIewModel;
+using BlulkyBook.Utility;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using System.Diagnostics;
@@ -22,6 +23,12 @@ namespace BlulkyBook.Web.Areas.Customer.Controllers
 
         public IActionResult Index()
         {
+            var userId = User.FindFirstValue(ClaimTypes.NameIdentifier);
+
+            if (userId != null)
+            {
+                HttpContext.Session.SetInt32(SD.SessionCart, _unityOfWork.ShoppingCart.GetAll(x => x.ApplicationUserId == userId).Count());
+            }
             IEnumerable<Product> productList = _unityOfWork.Product.GetAll(includePropeties: "Category");
             return View(productList);
         }
@@ -58,12 +65,16 @@ namespace BlulkyBook.Web.Areas.Customer.Controllers
                 {
                     checkShoppingIDExist.Count += cart.Count;
                     _unityOfWork.ShoppingCart.Update(checkShoppingIDExist);
+                    _unityOfWork.Save();
+                    HttpContext.Session.SetInt32(SD.SessionCart, _unityOfWork.ShoppingCart.GetAll(x => x.ApplicationUserId == cart.ApplicationUserId).Count());
                 }
                 else
                 {
                     _unityOfWork.ShoppingCart.Add(cart);
+                    _unityOfWork.Save();
+                    HttpContext.Session.SetInt32(SD.SessionCart, _unityOfWork.ShoppingCart.GetAll(x => x.ApplicationUserId == cart.ApplicationUserId).Count());
                 }
-                _unityOfWork.Save();
+               
                 TempData["success"] = "Cart updated successfully";
             }
             return RedirectToAction("Index");

@@ -9,6 +9,7 @@ namespace BlulkyBook.DataAccess.Repository.Interface
 {
     public interface IOrderHeaderRepository : IRepositroy<OrderHeader>
     {
+        void UpdateOrderStatus(int Id, string status, string? paymentStatus = null);
         void Update(OrderHeader entity);
         void Save();
     }
